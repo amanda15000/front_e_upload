@@ -3,7 +3,10 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
-  await app.listen(process.env.PORT ?? 3000);
+  
+  // ESSA LINHA É OBRIGATÓRIA para o Angular conseguir falar com o NestJS:
+  app.enableCors(); 
+
+  await app.listen(3000);
 }
 bootstrap();
