@@ -1,12 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  
-  // ESSA LINHA É OBRIGATÓRIA para o Angular conseguir falar com o NestJS:
-  app.enableCors(); 
-
-  await app.listen(3000);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.enableCors();
+  // Serve arquivos estáticos da pasta 'drive'
+  app.useStaticAssets(join(__dirname, '..', 'drive'), { prefix: '/files' });
+  await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
